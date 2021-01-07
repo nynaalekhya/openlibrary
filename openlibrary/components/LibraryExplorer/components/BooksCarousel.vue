@@ -23,16 +23,19 @@
 <script>
 import FlatBookCover from './FlatBookCover';
 import CONFIGS from '../configs';
-
 export default {
     components: { FlatBookCover },
     props: {
-        books: Array
+        books: Array,
+        observer: Object
     },
     data() {
         return {
             OL_BASE_BOOKS: CONFIGS.OL_BASE_BOOKS
         };
+    },
+    mounted() {
+        this.observer.observe(this.$el);
     },
     methods: {
         beforeBookLeave(el) {
@@ -54,7 +57,6 @@ export default {
   align-items: flex-end;
   position: relative;
 }
-
 .book {
   margin-left: 5px;
   display: flex;
@@ -63,17 +65,14 @@ export default {
   color: inherit;
   text-decoration: none;
 }
-
 .bcbook-enter,
 .bcbook-leave-to {
   transform: translateY(30px);
   opacity: 0;
 }
-
 .bcbook-move {
   transition: all .5s;
 }
-
 .bcbook-leave-active,
 .bcbook-enter-active {
   transition-property: transform, opacity;
@@ -82,14 +81,12 @@ export default {
 .bcbook-leave-active {
   position: absolute !important;
 }
-
 .book-end-wrapper {
   align-self: stretch;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 img.cover {
   flex: 1;
   object-fit: contain;
@@ -104,7 +101,6 @@ div.cover {
   align-items: center;
   background: grey;
 }
-
 .cover-label {
   flex-shrink: 0;
 }

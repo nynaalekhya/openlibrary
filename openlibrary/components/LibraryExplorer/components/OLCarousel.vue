@@ -1,6 +1,6 @@
 <template>
   <div class="ol-carousel">
-    <BooksCarousel v-if="status == 'Loaded' || results.length" :books="results">
+    <BooksCarousel :observer="intersectionObserver" :books="results">
       <template v-slot:cover-label="{book}">
         <slot name="cover-label" v-bind:book="book"/>
       </template>
@@ -40,9 +40,7 @@ import debounce from 'lodash/debounce';
 import Vue from 'vue';
 import CONFIGS from '../configs';
 // import * as Vibrant from "node-vibrant";
-
 // window.Vibrant = Vibrant;
-
 export default {
     components: { BooksCarousel },
     props: {
@@ -60,12 +58,9 @@ export default {
             results: [],
             numFound: null,
             error: null,
-
             /** @type {IntersectionObserver} */
             intersectionObserver: null,
-
             isVisible: false,
-
             /** @type {AbortController} */
             lastFetchAbortController: null,
         };
@@ -78,7 +73,6 @@ export default {
                 limit: this.limit
             })}`;
         },
-
         offset: {
             get() { return this.node.requests[this.query]?.offset ?? 0; },
             set(newVal) {
@@ -97,26 +91,20 @@ export default {
             this.error = null;
             if (this.isVisible) this.debouncedReloadResults();
         },
-
         isVisible(newVal) {
             if (newVal) this.reloadResults();
         }
     },
-
     created() {
         this.debouncedReloadResults = debounce(this.reloadResults, 1000);
         this.intersectionObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(this.handleIntersectionChange, {
-            rootMargin: '100px'
+            root:this.$el,
+            threshold: 1.0
         }) : null;
     },
-
-    mounted() {
-        this.intersectionObserver.observe(this.$el);
-    },
     beforeDestroy() {
-        this.intersectionObserver.unobserve(this.$el);
+        this.intersectionObserver.disconnect();
     },
-
     methods: {
         /**
          * @param {IntersectionObserverEntry[]} entries
@@ -128,27 +116,21 @@ export default {
             const isIntersecting = entries[0].intersectionRatio > 0;
             this.isVisible = isIntersecting;
         },
-
         async reloadResults(cache='force-cache') {
             return await this.loadResults(this.offset, cache);
         },
-
         async loadResults(offset, cache='force-cache') {
             // Don't re-fetch if already there
             if (offset == this.offset && this.results.length) return;
-
             this.lastFetchAbortController?.abort();
             if ('AbortController' in window) this.lastFetchAbortController = new AbortController();
-
             const params = new URLSearchParams({
                 q: this.query,
                 offset,
                 limit: this.limit,
                 fields: 'key,title,author_name,cover_i,ddc,lcc,lending_edition_s'
             });
-
             const url = `${CONFIGS.OL_BASE_SEARCH}/search.json?${params.toString()}`;
-
             this.status = 'Loading';
             try {
                 const r = await fetch(url, {
@@ -163,13 +145,11 @@ export default {
                 this.status = 'Errored';
             }
         },
-
         async loadNextPage() {
             const newOffset = this.offset + this.results.length;
             await this.loadResults(newOffset);
             if (this.status == 'Loaded') this.offset = newOffset;
         },
-
         async loadPrevPage() {
             const newOffset = this.offset - this.limit;
             await this.loadResults(newOffset);
@@ -178,8 +158,6 @@ export default {
     }
 };
 </script>
-
-
 <style scoped>
 .load-books {
   width: 100%;
@@ -190,7 +168,6 @@ export default {
   text-align: center;
   margin-bottom: 4px;
 }
-
 @keyframes slide-down {
   from {
     transform: translate(-50%, -20px);
@@ -201,7 +178,6 @@ export default {
     opacity: 1;
   }
 }
-
 .status-text {
   position: absolute;
   top: 0;
@@ -213,7 +189,6 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
-
 .status-text.v-enter-active {
   animation: slide-down .2s;
 }
@@ -239,7 +214,6 @@ export default {
   text-align: center;
   color: inherit;
 }
-
 .ol-carousel {
   min-height: 100px;
   text-align: center;
