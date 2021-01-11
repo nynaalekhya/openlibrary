@@ -98,7 +98,7 @@ export default {
     created() {
         this.debouncedReloadResults = debounce(this.reloadResults, 1000);
         this.intersectionObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(this.handleIntersectionChange, {
-            root:this.$el,
+            root: this.$el,
             threshold: 1.0
         }) : null;
     },
