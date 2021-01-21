@@ -25,12 +25,12 @@ $ cover_ids =  [cover for cover in doc.get('covers', []) if cover != -1]
 
   <span class="details">
       <span class="resultTitle">
-         <h3 class="booktitle">
+         <span class="h3" class="booktitle">
            <a itemprop="name" href="$(book_url)?edition=$(ocaid)"
               class="results">$doc.title$(': ' + doc.subtitle if doc.get('subtitle', None) else '')</a>
            $if doc.get('publish_date'):
              ($(doc['publish_date']))
-         </h3>
+         </span>
       </span>
       <span class="bookauthor">$_('by')
         $if not doc.authors:
@@ -56,12 +56,12 @@ $ cover_ids =  [cover for cover in doc.get('covers', []) if cover != -1]
           $if doc.get('ia'):
             &mdash; $_('%s previewable', len(doc.get('ia')))
             $if len(doc.get('ia')) > 1:
-              <div class="preview-covers">
+              <span class="preview-covers">
                 $for x, i in enumerate(doc.get('ia')[1:10]):
                   <a href="$(book_url)?edition=$(i)">
-                    <img width="30" height="45" loading="lazy" src="//archive.org/download/$(i)/page/cover_w60_h60.jpg">
+                    <img width="30" height="45" loading="lazy" src="//archive.org/download/$(i)/page/cover_w60_h60.jpg" alt>
                   </a>
-              </div>
+                </span>
       </span>
       $if extra:
         <div class="serp-extras">
