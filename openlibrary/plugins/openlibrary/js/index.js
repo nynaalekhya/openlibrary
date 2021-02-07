@@ -32,6 +32,7 @@ import '../../../../static/css/js-all.less';
 import Promise from 'promise-polyfill';
 import { confirmDialog, initDialogs } from './dialog';
 import initTabs from './tabs.js';
+import initEdit from './edit';
 
 // Eventually we will export all these to a single global ol, but in the mean time
 // we add them to the window object for backwards compatibility.
@@ -116,7 +117,7 @@ jQuery(function () {
     // Enable any carousels in the page
     if ($carouselElements.length) {
         import(/* webpackChunkName: "carousel" */ './carousel')
-            .then((module) => module.init($carouselElements));
+             .then((module) => module.init($carouselElements));
     }
     if ($('script[type="text/json+graph"]').length > 0) {
         import(/* webpackChunkName: "graphs" */ './graphs')
@@ -137,6 +138,10 @@ jQuery(function () {
     if (document.getElementById('modal-link')) {
         import(/* webpackChunkName: "patron_metadata" */ './patron-metadata')
             .then((module) => module.initPatronMetadata());
+    }
+
+    if (document.getElementById('excerpts')) {
+        initEdit($);
     }
 
     $(document).on('click', '.slide-toggle', function () {
