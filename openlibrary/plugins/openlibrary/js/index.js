@@ -14,7 +14,7 @@ import autocompleteInit from './autocomplete';
 import addNewFieldInit from './add_new_field';
 import automaticInit from './automatic';
 import bookReaderInit from './bookreader_direct';
-import { ungettext, ugettext,  sprintf } from './i18n';
+import { ungettext, ugettext, sprintf } from './i18n';
 import addFadeInFunctionsTojQuery from './jquery.customFade';
 import jQueryRepeat from './jquery.repeat';
 import { enumerate, htmlquote, websafe, foreach, join, len, range } from './jsdef';
@@ -67,7 +67,7 @@ window.$ = jQuery;
 window.Promise = Promise;
 
 // Initialise some things
-jQuery(function () {
+jQuery(function() {
     const $markdownTextAreas = $('textarea.markdown');
     // Live NodeList is cast to static array to avoid infinite loops
     const $carouselElements = $('.carousel--progressively-enhanced');
@@ -81,8 +81,8 @@ jQuery(function () {
     automaticInit($);
     // wmd editor
     if ($markdownTextAreas.length) {
-        import(/* webpackChunkName: "markdown-editor" */ './markdown-editor')
-            .then((module) => module.initMarkdownEditor($markdownTextAreas));
+        import ( /* webpackChunkName: "markdown-editor" */ './markdown-editor')
+        .then((module) => module.initMarkdownEditor($markdownTextAreas));
     }
     bookReaderInit($);
     addFadeInFunctionsTojQuery($);
@@ -91,60 +91,60 @@ jQuery(function () {
     init($);
     // conditionally load functionality based on what's in the page
     if (document.getElementsByClassName('editions-table--progressively-enhanced').length) {
-        import(/* webpackChunkName: "editions-table" */ './editions-table')
-            .then(module => module.initEditionsTable());
+        import ( /* webpackChunkName: "editions-table" */ './editions-table')
+        .then(module => module.initEditionsTable());
     }
     // conditionally load real time signup functionality based on class in the page
     if (document.getElementsByClassName('olform create validate').length) {
-        import('./realtime_account_validation.js')
-            .then(module => module.initRealTimeValidation());
+        import ('./realtime_account_validation.js')
+        .then(module => module.initRealTimeValidation());
     }
     // conditionally load readmore button based on class in the page
     if (document.getElementsByClassName('read-more-button').length) {
-        import(/* webpackChunkName: "readmore" */ './readmore.js')
-            .then(module => module.initReadMoreButton());
+        import ( /* webpackChunkName: "readmore" */ './readmore.js')
+        .then(module => module.initReadMoreButton());
     }
     // conditionally loads Goodreads import based on class in the page
     if (document.getElementsByClassName('import-table').length) {
-        import('./goodreads_import.js')
-            .then(module => module.initGoodreadsImport());
+        import ('./goodreads_import.js')
+        .then(module => module.initGoodreadsImport());
     }
     // conditionally loads Related Carousels based on class in the page
     if (document.getElementsByClassName('RelatedWorksCarousel').length) {
-        import('./carousels_partials.js')
-            .then(module => module.initCarouselsPartials());
+        import ('./carousels_partials.js')
+        .then(module => module.initCarouselsPartials());
     }
     // Enable any carousels in the page
     if ($carouselElements.length) {
-        import(/* webpackChunkName: "carousel" */ './carousel')
-             .then((module) => module.init($carouselElements));
+        import ( /* webpackChunkName: "carousel" */ './carousel')
+        .then((module) => module.init($carouselElements));
     }
     if ($('script[type="text/json+graph"]').length > 0) {
-        import(/* webpackChunkName: "graphs" */ './graphs')
-            .then((module) => module.init());
+        import ( /* webpackChunkName: "graphs" */ './graphs')
+        .then((module) => module.init());
     }
 
     if (window.READINGLOG_STATS_CONFIG) {
-        import(/* webpackChunkName: "readinglog_stats" */ './readinglog_stats')
-            .then(module => module.init(window.READINGLOG_STATS_CONFIG));
+        import ( /* webpackChunkName: "readinglog_stats" */ './readinglog_stats')
+        .then(module => module.init(window.READINGLOG_STATS_CONFIG));
     }
 
     const pageEl = $('#page-barcodescanner');
     if (pageEl.length) {
-        import(/* webpackChunkName: "page-barcodescanner" */ './page-barcodescanner')
-            .then((module) => module.init());
+        import ( /* webpackChunkName: "page-barcodescanner" */ './page-barcodescanner')
+        .then((module) => module.init());
     }
 
     if (document.getElementById('modal-link')) {
-        import(/* webpackChunkName: "patron_metadata" */ './patron-metadata')
-            .then((module) => module.initPatronMetadata());
+        import ( /* webpackChunkName: "patron_metadata" */ './patron-metadata')
+        .then((module) => module.initPatronMetadata());
     }
 
     if (document.getElementById('excerpts')) {
         initEdit($);
     }
 
-    $(document).on('click', '.slide-toggle', function () {
+    $(document).on('click', '.slide-toggle', function() {
         $(`#${$(this).attr('aria-controls')}`).slideToggle();
     });
 });

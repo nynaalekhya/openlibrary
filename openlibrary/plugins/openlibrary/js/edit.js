@@ -7,7 +7,7 @@ export default function($) {
 
     $('#excerpts').repeat({
         vars: {
-            "prefix": 'work--excerpts',
+            prefix: 'work--excerpts',
         },
         validate: function(data) {
             if (!data.excerpt) {
@@ -26,8 +26,7 @@ export default function($) {
         var color;
         if (len > 2000) {
             color = '#e44028';
-        }
-        else {
+        } else {
             color = 'gray';
         }
         $('#excerpts-excerpt-len').html(2000 - len).css('color', color);
@@ -36,8 +35,7 @@ export default function($) {
     function show_hide_title() {
         if ($('#excerpts-display .repeat-item').length > 1) {
             $('#excerpts-so-far').show();
-        }
-        else {
+        } else {
             $('#excerpts-so-far').hide();
         }
     }
@@ -51,7 +49,7 @@ export default function($) {
         .bind('repeat-add', show_hide_title)
         .bind('repeat-remove', show_hide_title);
 
-        // update length on load
+    // update length on load
     update_len();
     show_hide_title();
 }
