@@ -145,7 +145,7 @@ jQuery(function () {
         import(/* webpackChunkName: "patron_metadata" */ './patron-metadata')
             .then((module) => module.initPatronMetadata());
     }
-    /*updated*/
+    /*update*/
     if ($('#cboxPrevious').length) {
         $('#cboxPrevious').attr({'aria-label': 'Previous button', 'aria-hidden': 'true'});
     }
